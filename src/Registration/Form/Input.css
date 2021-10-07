@@ -1,0 +1,50 @@
+.container {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: 10% 30% 60%;
+}
+
+.input-element {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: white;
+  font: inherit;
+  padding: 6px 10px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-element:focus {
+  outline: none;
+  background-color: #ccc;
+}
+
+.checkbox-element {
+  margin: auto;
+}
+
+.string-element {
+  white-space: nowrap;
+  margin: 20px auto 0 auto;
+}
+
+.label {
+  display: block;
+  margin: auto 0;
+  text-align: left;
+  font-weight: bold;
+}
+
+.validation-error {
+  color: red;
+  margin: 0 auto 10px auto;
+}
+
+.invalid {
+  border: 1px solid red;
+  background-color: #FDA49A;
+}
