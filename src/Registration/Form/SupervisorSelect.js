@@ -12,15 +12,18 @@ const supervisorReducer = (currSupervisors, action) => {
 };
 
 const SupervisorSelect = props => {
+	const { value, onChange } = props;
+
 	const [supervisors, dispatch] = useReducer(supervisorReducer, []);
 
-	const {isLoading, data, error, sendRequest, clear} = useHttp();
+	const { isLoading, data, error, sendRequest } = useHttp();
 
 	// GET /api/supervisors 
 	useEffect(() => {
 		const t = setTimeout(() => {
 			sendRequest(
-				'https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers',
+				'https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers',		// use this for testing
+				// '/api/supervisors',
 				'GET'
 			);
 		}, 500);
@@ -38,7 +41,6 @@ const SupervisorSelect = props => {
 					lastName: data[key].lastName,
 				});
 			}
-			// console.log(loadedSupervisors)
 			dispatch({
 				type: 'SET',
 				supervisors: loadedSupervisors,
@@ -49,17 +51,25 @@ const SupervisorSelect = props => {
 	// Create supervisor list in order of jurisdiction, lastName, firstName.
 	// Exclude numeric jurisdictions.
 	//   string format:  jurisdiction - lastName, firstName
-	let supervisorList = [<option key={0} value="">Select...</option>];
+	let supervisorList = [<option key={0} value=''>Select...</option>];
 	for (let i in supervisors) {
 		const supervisor = supervisors[i];
 		supervisorList = [
 			...supervisorList,
-			<option key={i+1}>{supervisor.jurisdiction + " - " + supervisor.lastName + ", " + supervisor.firstName}</option>
+			<option 
+				key={i+1}
+				value={supervisor.jurisdiction + " - " + supervisor.lastName + ", " + supervisor.firstName}
+			>
+				{supervisor.jurisdiction + " - " + supervisor.lastName + ", " + supervisor.firstName}
+			</option>
 		];
 	}
 
 	return (
-		<select id="supervisor" className="input-element">
+		<select className="input-element"
+			value={value}
+			onChange={onChange}
+		>
 			{supervisorList}
 		</select>
 	);

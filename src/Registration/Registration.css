@@ -1,28 +1,47 @@
 form {
-    width: 60vw;
-    margin: 0 auto;
-}
+	width: 60vw;
+	margin: 0 auto;
+	
+	text-align: left;
 
-.row {
-    margin: 20px auto;
-
-    display: flex;
-    flex-flow: row nowrap;
+	display: flex;
+	flex-flow: column nowrap;
 }
 
 .title {
-    margin: 20px auto;
-    /* border: 1px solid black; */
-    font-weight: 1000;
-    font-size: larger;
-    text-align: center;
+	margin: 20px auto;
+	font-weight: 1000;
+	font-size: larger;
+	text-align: center;
 }
 
-.name label {
-    text-align: left;
+.names, .notify {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 }
 
-/* .name {
-    display: flex;
-    flex-flow: column nowrap;
-} */
+.name, .email, .phone, .supervisor {
+	padding: 0 20px 20px 0;
+
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.notify-q {
+	margin: 0;
+	text-align: left;
+}
+
+.supervisor {
+	width: 50%;
+	margin: 0 auto;
+}
+
+.submit {
+	text-align: center;
+}
+
+.err {
+	color: red;
+	margin: 0 auto 10px auto;
+}
