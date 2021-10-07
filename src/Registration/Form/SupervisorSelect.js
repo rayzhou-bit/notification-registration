@@ -13,10 +13,9 @@ const supervisorReducer = (currSupervisors, action) => {
 
 const SupervisorSelect = props => {
 	const { value, onChange } = props;
+	const { isLoading, data, error, sendRequest } = useHttp();
 
 	const [supervisors, dispatch] = useReducer(supervisorReducer, []);
-
-	const { isLoading, data, error, sendRequest } = useHttp();
 
 	// GET /api/supervisors 
 	useEffect(() => {

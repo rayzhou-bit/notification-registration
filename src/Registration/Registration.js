@@ -1,47 +1,48 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 import './Registration.css';
 import useHttp from '../hooks/http';
 import SupervisorSelect from './Form/SupervisorSelect';
 
 const Registration = props => {
-	const [formData, setFormData] = useState({
-		fname: '',
-		lname: '',
-		emailCheck: false,
-		email: '',
-		phoneCheck: false,
-		phone: '',
-		supervisor: '',
-	});
-	const [validationErr, setValidationErr] = useState([]);
-	
 	const { sendRequest } = useHttp();
 
+	// State holding user-submitted values.
+	const [formData, setFormData] = useState({
+		firstName: '',
+		lastName: '',
+		emailCheck: false,
+		email: '',
+		phoneNumberCheck: false,
+		phoneNumber: '',
+		supervisor: '',
+	});
+
+	// State holding validation error messages.
+	const [validationErr, setValidationErr] = useState([]);
+	
 	// POST /api/submit
 	const submitHandler = (event) => {
 		event.preventDefault();
 
 		// Validation check
 		let validationErr = [];
-		if (!checkValidity(formData.fname, "isAlpha")) {
+		if (!checkValidity(formData.firstName, "isAlpha")) {
 			validationErr.push("Please enter a first name containing only letters.");
 		}
-		if (!checkValidity(formData.lname, "isAlpha")) {
+		if (!checkValidity(formData.lastName, "isAlpha")) {
 			validationErr.push("Please enter a last name containing only letters.");
 		}
-		if (!formData.emailCheck && !formData.phoneCheck) {
+		if (!formData.emailCheck && !formData.phoneNumberCheck) {
 			validationErr.push("Please provide an email and/or a phone number.");
 		}
 		if (formData.emailCheck && !checkValidity(formData.email, "isEmail")) {
 			validationErr.push("Please enter a valid email address.");
 		}
-		if (formData.phoneCheck && !checkValidity(formData.phone, "isPhone")) {
+		if (formData.phoneNumberCheck && !checkValidity(formData.phoneNumber, "isPhone")) {
 			validationErr.push("Please enter a valid email address.");
 		}
 		setValidationErr(validationErr);
-		console.log(validationErr.length > 0)
 
 		// POST /api/submit
 		if (validationErr.length === 0) {
@@ -70,15 +71,15 @@ const Registration = props => {
 				<div className="first name">
 					<label>First Name</label>
 					<input type="text" required
-						value={formData.fname}
-						onChange={e => setFormData(updateObject(formData, {fname: e.target.value}))}
+						value={formData.firstName}
+						onChange={e => setFormData(updateObject(formData, {firstName: e.target.value}))}
 					/>
 				</div>
 				<div className="last name">
 					<label>Last Name</label>
 					<input type="text" required 
-						value={formData.lname}
-						onChange={e => setFormData(updateObject(formData, {lname: e.target.value}))}
+						value={formData.lastName}
+						onChange={e => setFormData(updateObject(formData, {lastName: e.target.value}))}
 					/>
 				</div>
 			</div>
@@ -102,14 +103,14 @@ const Registration = props => {
 				<div className="phone">
 					<div>
 						<input type="checkbox" 
-							value={formData.phoneCheck}
-							onChange={e => setFormData(updateObject(formData, {phoneCheck: e.target.value}))}
+							value={formData.phoneNumberCheck}
+							onChange={e => setFormData(updateObject(formData, {phoneNumberCheck: e.target.value}))}
 						/>
 						<label>Phone Number</label>
 					</div>
 					<input type="text" 
-						value={formData.phone}
-						onChange={e => setFormData(updateObject(formData, {phone: e.target.value}))}
+						value={formData.phoneNumber}
+						onChange={e => setFormData(updateObject(formData, {phoneNumber: e.target.value}))}
 					/>
 				</div>
 			</div>
