@@ -2,7 +2,7 @@ import React from 'react';
 
 import './App.css';
 
-import Registration from './Registration/Registration';
+import Registration from './client/Registration/Registration';
 
 function App() {
   return (

@@ -21,17 +21,19 @@ const SupervisorSelect = props => {
 	useEffect(() => {
 		const t = setTimeout(() => {
 			sendRequest(
-				'https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers',		// use this for testing
-				// '/api/supervisors',
+				// 'https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers',		// use this for testing
+				'https://localhost:8080/api/supervisors',
 				'GET'
 			);
 		}, 500);
 		return () => clearTimeout(t);
 	}, [sendRequest]);
 	
+	// process GET data after loading is finished
 	useEffect(() => {
 		if (!isLoading && !error && data) {
 			const loadedSupervisors = [];
+			console.log(data)
 			for (const key in data) {
 				loadedSupervisors.push({
 					id: key,

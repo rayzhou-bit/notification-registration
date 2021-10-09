@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 import './Registration.css';
 import useHttp from '../hooks/http';
@@ -33,9 +34,6 @@ const Registration = props => {
 		if (!checkValidity(formData.lastName, "isAlpha")) {
 			validationErr.push("Please enter a last name containing only letters.");
 		}
-		if (!formData.emailCheck && !formData.phoneNumberCheck) {
-			validationErr.push("Please provide an email and/or a phone number.");
-		}
 		if (formData.emailCheck && !checkValidity(formData.email, "isEmail")) {
 			validationErr.push("Please enter a valid email address.");
 		}
@@ -46,11 +44,19 @@ const Registration = props => {
 
 		// POST /api/submit
 		if (validationErr.length === 0) {
-			sendRequest(
-				'/api/submit',
-				'POST',
-				JSON.stringify(formData),
-			);
+			let message = formData;
+			if (!message.emailCheck) {
+				delete message.email;
+			}
+			if (!message.phoneNumberCheck) {
+				delete message.phoneNumber;
+			}
+			delete message.emailCheck;
+			delete message.phoneNumberCheck;
+
+			axios.post('https://localhost:8080/api/submit', message)
+				.then(resp => console.log(resp))
+				.catch(err => console.log(err));
 		}
 	};
 
@@ -70,14 +76,14 @@ const Registration = props => {
 			<div className="names">
 				<div className="first name">
 					<label>First Name</label>
-					<input type="text" required
+					<input type="text" id="fname" required
 						value={formData.firstName}
 						onChange={e => setFormData(updateObject(formData, {firstName: e.target.value}))}
 					/>
 				</div>
 				<div className="last name">
 					<label>Last Name</label>
-					<input type="text" required 
+					<input type="text" id="lname" required 
 						value={formData.lastName}
 						onChange={e => setFormData(updateObject(formData, {lastName: e.target.value}))}
 					/>
@@ -91,11 +97,11 @@ const Registration = props => {
 					<div>
 						<input type="checkbox"
 							value={formData.emailCheck}
-							onChange={e => setFormData(updateObject(formData, {emailCheck: e.target.value}))}
+							onChange={e => setFormData(updateObject(formData, {emailCheck: e.target.checked}))}
 						/>
 						<label>Email</label>
 					</div>
-					<input type="text" 
+					<input type="email" id="email"
 						value={formData.email}
 						onChange={e => setFormData(updateObject(formData, {email: e.target.value}))}
 					/>
@@ -104,11 +110,11 @@ const Registration = props => {
 					<div>
 						<input type="checkbox" 
 							value={formData.phoneNumberCheck}
-							onChange={e => setFormData(updateObject(formData, {phoneNumberCheck: e.target.value}))}
+							onChange={e => setFormData(updateObject(formData, {phoneNumberCheck: e.target.checked}))}
 						/>
 						<label>Phone Number</label>
 					</div>
-					<input type="text" 
+					<input type="text" id="phone"
 						value={formData.phoneNumber}
 						onChange={e => setFormData(updateObject(formData, {phoneNumber: e.target.value}))}
 					/>
@@ -147,7 +153,7 @@ const checkValidity = (value, rules) => {
 	if (!rules) { return true }
 	if (rules === 'isAlpha') {
 		const pattern = /^[A-Za-z]+$/;
-			isValid = pattern.test(value) && isValid;
+		isValid = pattern.test(value) && isValid;
 	}
 	if (rules === 'isEmail') {
 		const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
