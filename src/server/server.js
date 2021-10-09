@@ -73,13 +73,17 @@ const requestListener = (req, res) => {
 			// trigger error if no firstName, lastName or supervisor
 			if (!data.firstName || !data.lastName || !data.supervisor) {
 				res.writeHead(400);
-				res.write('Error: Missing supervisor.');
+				res.write('Error: Missing first name, last name or supervisor field.');
 				res.end();
 			}
 			else {
 				res.writeHead(200);
 				res.end();
 			}
+		}
+		else {
+			res.writeHead(400);
+			res.end();
 		}
 	}
 };
